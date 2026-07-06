@@ -18,10 +18,13 @@
     "node": ">=22"
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
+    "envalid": "^8.2.0",
     "express": "^5.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/node": "^26.1.0",
     "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
