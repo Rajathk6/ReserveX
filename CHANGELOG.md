@@ -1,6 +1,16 @@
-### **v0.1.0**
+# Changelog
 
-#### Added
+## v0.1.0
 
-- Folder structure setup
-- Architectural documents
+### Added
+
+- Repository initialization
+- TypeScript
+- ESLint
+- Prettier
+- Husky
+- lint-staged
+- Docker infrastructure
+- Redis
+- Environment configuration
+- GitHub Actions
