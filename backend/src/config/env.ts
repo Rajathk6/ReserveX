@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { cleanEnv, port, str } from 'envalid';
 
-export const env = cleanEnv(process.env, {
+const env = cleanEnv(process.env, {
   NODE_ENV: str(),
   PORT: port(),
   DATABASE_URL: str(),
@@ -10,3 +10,5 @@ export const env = cleanEnv(process.env, {
   JWT_ACCESS_SECRET: str(),
   JWT_REFRESH_SECRET: str(),
 });
+
+export default env;
