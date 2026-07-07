@@ -4,14 +4,14 @@ import { successResponse } from '../../../utils/apiResponse.js';
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/', (_req, res) => {
   return successResponse(res, 'Welcome to ReserveX API', {
     message: 'ReserveX API is running successfully',
     version: '0.2.0',
   });
 });
 
-router.get('/health', (req, res) => {
+router.get('/health', (_req, res) => {
   return successResponse(res, 'Health check completed', {
     status: 'UP',
     service: 'ReserveX API',
