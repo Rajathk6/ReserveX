@@ -1,5 +1,7 @@
 import express from 'express';
-import { requestLogger } from './middleware/requestLogger.js';
+import { pinoHttp } from 'pino-http';
+import logger from './config/logger.js';
+import router from './routes/api.routes.js';
 
 const app = express();
 
@@ -10,17 +12,13 @@ app.use(
     extended: true,
   }),
 );
-app.use(requestLogger);
+app.use(
+  pinoHttp({
+    logger,
+  }),
+);
 
 // Base Routes
-app.get('/', (req, res) => {
-  return res.status(200).send('hello');
-});
-
-app.get('/health', (_req, res) => {
-  return res.status(200).json({
-    status: 'UP',
-  });
-});
+app.use('/api/v1', router);
 
 export default app;
