@@ -1,6 +1,7 @@
 import express from 'express';
 import { pinoHttp } from 'pino-http';
 import logger from './config/logger.js';
+import router from './routes/api.routes.js';
 
 const app = express();
 
@@ -18,14 +19,6 @@ app.use(
 );
 
 // Base Routes
-app.get('/', (req, res) => {
-  return res.status(200).send('hello');
-});
-
-app.get('/health', (_req, res) => {
-  return res.status(200).json({
-    status: 'UP',
-  });
-});
+app.use('/api/v1', router);
 
 export default app;
