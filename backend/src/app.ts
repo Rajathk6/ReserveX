@@ -1,5 +1,6 @@
 import express from 'express';
-import { requestLogger } from './middleware/requestLogger.js';
+import { pinoHttp } from 'pino-http';
+import logger from './config/logger.js';
 
 const app = express();
 
@@ -10,7 +11,11 @@ app.use(
     extended: true,
   }),
 );
-app.use(requestLogger);
+app.use(
+  pinoHttp({
+    logger,
+  }),
+);
 
 // Base Routes
 app.get('/', (req, res) => {
