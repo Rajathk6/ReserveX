@@ -1,5 +1,6 @@
 import { prisma } from '../src/config/database.js';
 import logger from '../src/config/logger.js';
+import { handlePrismaError } from '../src/utils/prismaErrors.js';
 
 async function main() {
   await prisma.user.upsert({
@@ -17,8 +18,7 @@ async function main() {
 
 main()
   .catch((error) => {
-    console.error(error);
-    process.exit(1);
+    handlePrismaError(error);
   })
   .finally(async () => {
     await prisma.$disconnect();
