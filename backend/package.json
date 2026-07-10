@@ -1,6 +1,6 @@
 {
   "name": "@reservex/backend",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Production-inspired ticket booking backend.",
   "main": "dist/index.js",
   "scripts": {
