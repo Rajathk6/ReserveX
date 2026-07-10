@@ -2,7 +2,7 @@ import express from 'express';
 import { pinoHttp } from 'pino-http';
 import logger from './config/logger.js';
 import router from './routes/api.routes.js';
-import { AppError } from './errors/app-errors.js';
+import { AppError } from './errors/appErrors.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();

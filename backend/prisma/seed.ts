@@ -1,6 +1,6 @@
 import { prisma } from '../src/config/database.js';
 import logger from '../src/config/logger.js';
-import { handlePrismaError } from '../src/utils/prismaErrors.js';
+import { handlePrismaError } from '../src/utils/prismaError.js';
 
 async function main() {
   await prisma.user.upsert({
