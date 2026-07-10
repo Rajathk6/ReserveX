@@ -1,4 +1,5 @@
 import { prisma } from '../../../config/database.js';
+import { handlePrismaError } from '../../../utils/prismaErrors.js';
 
 export class UserRepository {
   async findAll() {
@@ -22,8 +23,12 @@ export class UserRepository {
   }
 
   async create(data: { email: string; fullName: string }) {
-    return prisma.user.create({
-      data,
-    });
+    try {
+      return prisma.user.create({
+        data,
+      });
+    } catch (error) {
+      handlePrismaError(error);
+    }
   }
 }
