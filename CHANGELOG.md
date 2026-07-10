@@ -15,7 +15,7 @@
 - Environment configuration
 - GitHub Actions
 
-## v0.1.0 - Backend Foundation
+## v0.2.0 - Backend Foundation
 
 ### Added
 
@@ -28,3 +28,16 @@
 - Production health endpoint
 - Global error handling
 - Standardized API responses
+
+## v0.3.0 - Database Layer and Prisma
+
+### Added
+
+- Prisma ORM
+- Supabase PostgreSQL integration
+- Database migrations
+- Seed script
+- Shared Prisma Client
+- Repository layer
+- Transaction support
+- Database error translation
