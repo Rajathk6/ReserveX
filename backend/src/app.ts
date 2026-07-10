@@ -25,7 +25,7 @@ app.use(
 // Base Routes
 app.use('/api/v1', router);
 
-app.use((req, res, next) => {
+app.use((_req, _res, next) => {
   next(new AppError(404, 'Route Not Found'));
 });
 
