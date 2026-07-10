@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { AppError } from '../errors/app-errors.js';
+import { AppError } from '../errors/appErrors.js';
 export function handlePrismaError(error: unknown): never {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     switch (error.code) {

@@ -1,5 +1,5 @@
 import { prisma } from '../../../config/database.js';
-import { handlePrismaError } from '../../../utils/prismaErrors.js';
+import { handlePrismaError } from '../../../utils/prismaError.js';
 
 export class UserRepository {
   async findAll() {
