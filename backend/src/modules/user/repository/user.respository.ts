@@ -20,6 +20,14 @@ export class UserRepository {
       where: {
         email,
       },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        passwordHash: true,
+        role: true,
+        isActive: true,
+      },
     });
   }
 

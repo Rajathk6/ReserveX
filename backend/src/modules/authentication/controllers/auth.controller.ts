@@ -1,15 +1,13 @@
 import { successResponse } from '../../../utils/apiResponse.js';
 import { AuthService } from '../services/auth.service.js';
 import { Request, Response } from 'express';
-import { registerSchema } from '../validators/auth.validator.js';
+import { loginSchema, registerSchema } from '../validators/auth.validator.js';
 import { AppError } from '../../../errors/appErrors.js';
 
 export class AuthController {
   constructor(private readonly authService = new AuthService()) {}
-  registerValidator(req: Request, _res: Response) {
-    return req.body;
-  }
 
+  // register user
   async register(req: Request, res: Response) {
     const validatedData = registerSchema.safeParse(req.body);
 
@@ -29,5 +27,24 @@ export class AuthController {
       },
       201,
     );
+  }
+
+  //login user
+
+  async login(req: Request, res: Response) {
+    const validatedData = loginSchema.safeParse(req.body);
+
+    if (!validatedData.success) {
+      throw new AppError(400, validatedData.error.issues[0].message);
+    }
+
+    const user = await this.authService.login(req.body);
+
+    return successResponse(res, 'user logged in succesfully', {
+      id: user.id,
+      fullName: user.fullName,
+      email: user.email,
+      role: user.role,
+    });
   }
 }
