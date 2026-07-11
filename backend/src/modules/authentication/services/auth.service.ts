@@ -2,9 +2,13 @@ import bcrypt from 'bcrypt';
 import { UserRepository } from '../../user/repository/user.respository.js';
 import { LoginDTO, RegisterDTO } from '../validators/auth.validator.js';
 import { AppError } from '../../../errors/appErrors.js';
+import { JwtService } from './jwt.service.js';
 
 export class AuthService {
-  constructor(private readonly userRepository = new UserRepository()) {}
+  constructor(
+    private readonly userRepository = new UserRepository(),
+    private readonly jwtService = new JwtService(),
+  ) {}
 
   // register user
   async register(data: RegisterDTO) {
@@ -44,7 +48,15 @@ export class AuthService {
       throw new AppError(401, 'invalid credentials');
     }
 
-    return user;
+    const accessToken = this.jwtService.generateAccessToken(user.id, user.role);
+
+    return {
+      id: user.id,
+      fullName: user.fullName,
+      email: user.email,
+      role: user.role,
+      accessToken,
+    };
   }
 
   // helper functions
