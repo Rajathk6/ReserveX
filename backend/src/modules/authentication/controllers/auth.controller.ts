@@ -15,7 +15,7 @@ export class AuthController {
       throw new AppError(400, validatedData.error.issues[0].message);
     }
 
-    const user = await this.authService.register(req.body);
+    const user = await this.authService.register(validatedData.data);
 
     return successResponse(
       res,
@@ -38,7 +38,7 @@ export class AuthController {
       throw new AppError(400, validatedData.error.issues[0].message);
     }
 
-    const user = await this.authService.login(req.body);
+    const user = await this.authService.login(validatedData.data);
 
     return successResponse(res, 'user logged in succesfully', {
       id: user.id,
