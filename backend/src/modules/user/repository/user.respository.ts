@@ -22,7 +22,7 @@ export class UserRepository {
     });
   }
 
-  async create(data: { email: string; fullName: string }) {
+  async create(data: { email: string; fullName: string; passwordHash: string }) {
     try {
       return prisma.user.create({
         data,
