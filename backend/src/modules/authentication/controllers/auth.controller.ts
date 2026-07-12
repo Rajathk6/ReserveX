@@ -42,6 +42,7 @@ export class AuthController {
 
     return successResponse(res, 'user logged in succesfully', {
       accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
       user: {
         id: user.id,
         fullName: user.fullName,
