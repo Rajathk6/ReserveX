@@ -1,6 +1,6 @@
 model RefreshToken {
     id String @id @default(cuid())
-    token String @unique
+    tokenHash String @unique
     expiresAt DateTime @db.Timestamptz(3)
     createdAt DateTime @default(now()) @db.Timestamptz(3)
     userId String

@@ -55,9 +55,9 @@ export class AuthService {
     }
 
     const accessToken = this.jwtService.generateAccessToken(user.id, user.role);
-    const refreshToken = this.refreshTokenService.generateRefreshToken();
+    const refreshToken = this.refreshTokenService.generateRefreshTokenHash();
     await this.refreshTokenRepository.create({
-      token: refreshToken,
+      tokenHash: refreshToken,
       userId: user.id,
       expiresAt: new Date(Date.now() + ms(env.JWT_REFRESH_EXPIRES_IN as ms.StringValue)),
     });
