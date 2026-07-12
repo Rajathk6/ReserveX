@@ -1,10 +1,21 @@
 import bcrypt from 'bcrypt';
+import ms from 'ms';
+
 import { UserRepository } from '../../user/repository/user.respository.js';
 import { LoginDTO, RegisterDTO } from '../validators/auth.validator.js';
 import { AppError } from '../../../errors/appErrors.js';
+import { JwtService } from './jwt.service.js';
+import { RefreshTokenService } from './refreshToken.service.js';
+import { RefreshTokenRepository } from '../repositories/refreshToken.repository.js';
+import env from '../../../config/env.js';
 
 export class AuthService {
-  constructor(private readonly userRepository = new UserRepository()) {}
+  constructor(
+    private readonly userRepository = new UserRepository(),
+    private readonly refreshTokenRepository = new RefreshTokenRepository(),
+    private readonly jwtService = new JwtService(),
+    private readonly refreshTokenService = new RefreshTokenService(),
+  ) {}
 
   // register user
   async register(data: RegisterDTO) {
@@ -26,7 +37,6 @@ export class AuthService {
   }
 
   // login user
-
   async login(data: LoginDTO) {
     const user = await this.userRepository.findByEmail(data.email);
 
@@ -44,7 +54,22 @@ export class AuthService {
       throw new AppError(401, 'invalid credentials');
     }
 
-    return user;
+    const accessToken = this.jwtService.generateAccessToken(user.id, user.role);
+    const refreshToken = this.refreshTokenService.generateRefreshTokenHash();
+    await this.refreshTokenRepository.create({
+      tokenHash: refreshToken,
+      userId: user.id,
+      expiresAt: new Date(Date.now() + ms(env.JWT_REFRESH_EXPIRES_IN as ms.StringValue)),
+    });
+
+    return {
+      id: user.id,
+      fullName: user.fullName,
+      email: user.email,
+      role: user.role,
+      accessToken,
+      refreshToken,
+    };
   }
 
   // helper functions

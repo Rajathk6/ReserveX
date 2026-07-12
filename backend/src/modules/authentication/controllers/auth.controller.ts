@@ -41,10 +41,14 @@ export class AuthController {
     const user = await this.authService.login(validatedData.data);
 
     return successResponse(res, 'user logged in succesfully', {
-      id: user.id,
-      fullName: user.fullName,
-      email: user.email,
-      role: user.role,
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
+      user: {
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+      },
     });
   }
 }
