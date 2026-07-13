@@ -1,20 +1,18 @@
-import bcrypt from 'bcrypt';
 import ms from 'ms';
 
 import { UserRepository } from '../../user/repository/user.respository.js';
 import { LoginDTO, RegisterDTO } from '../validators/auth.validator.js';
 import { AppError } from '../../../errors/appErrors.js';
-import { JwtService } from './jwt.service.js';
-import { RefreshTokenService } from './refreshToken.service.js';
+import { generateAccessToken } from '../utils/jwt.js';
 import { RefreshTokenRepository } from '../repositories/refreshToken.repository.js';
 import env from '../../../config/env.js';
+import { hashPassword, verifyPassword } from '../utils/password.js';
+import { generateRefreshToken, generateRefreshTokenHash } from '../utils/refreshToken.js';
 
 export class AuthService {
   constructor(
     private readonly userRepository = new UserRepository(),
     private readonly refreshTokenRepository = new RefreshTokenRepository(),
-    private readonly jwtService = new JwtService(),
-    private readonly refreshTokenService = new RefreshTokenService(),
   ) {}
 
   // register user
@@ -24,12 +22,12 @@ export class AuthService {
       throw new AppError(409, 'user already exists');
     }
 
-    const hashPassword = await this.hashPassword(data.password);
+    const hashedPassword = await hashPassword(data.password);
 
     const user = await this.userRepository.create({
       fullName: data.fullName,
       email: data.email,
-      passwordHash: hashPassword,
+      passwordHash: hashedPassword,
     });
 
     return user;
@@ -46,14 +44,14 @@ export class AuthService {
       throw new AppError(401, 'Account has been deactivated');
     }
 
-    const isValidPassword = await this.verifyPassword(data.password, user.passwordHash);
+    const isValidPassword = await verifyPassword(data.password, user.passwordHash);
     if (!isValidPassword) {
       throw new AppError(401, 'invalid credentials');
     }
 
-    const accessToken = this.jwtService.generateAccessToken(user.id, user.role);
-    const refreshToken = this.refreshTokenService.generateRefreshToken();
-    const refreshTokenHash = this.refreshTokenService.generateRefreshTokenHash(refreshToken);
+    const accessToken = generateAccessToken(user.id, user.role);
+    const refreshToken = generateRefreshToken();
+    const refreshTokenHash = generateRefreshTokenHash(refreshToken);
 
     await this.refreshTokenRepository.create({
       tokenHash: refreshTokenHash,
@@ -73,7 +71,7 @@ export class AuthService {
 
   // logout user
   async logout(token: string) {
-    const tokenHash = this.refreshTokenService.generateRefreshTokenHash(token);
+    const tokenHash = generateRefreshTokenHash(token);
     const validToken = await this.refreshTokenRepository.findByTokenHash(tokenHash);
 
     if (!validToken) {
@@ -81,14 +79,5 @@ export class AuthService {
     }
 
     await this.refreshTokenRepository.deleteByRefreshtoken(validToken.tokenHash);
-  }
-
-  // helper functions
-  async hashPassword(password: string) {
-    return bcrypt.hash(password, 12);
-  }
-
-  async verifyPassword(password: string, hash: string) {
-    return bcrypt.compare(password, hash);
   }
 }

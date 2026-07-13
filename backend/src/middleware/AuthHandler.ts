@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { JwtService } from '../modules/authentication/services/jwt.service.js';
+import { verifyAccessToken } from '../modules/authentication/utils/jwt.js';
 import { AppError } from '../errors/appErrors.js';
 import { UserRole } from '@prisma/client';
-
-const jwtService = new JwtService();
 
 export function authenticationHandler(req: Request, _res: Response, next: NextFunction) {
   const auth = req.headers.authorization;
@@ -12,7 +10,7 @@ export function authenticationHandler(req: Request, _res: Response, next: NextFu
   }
 
   const token = auth.split(' ')[1];
-  const payload = jwtService.verifyAccessToken(token);
+  const payload = verifyAccessToken(token);
 
   req.user = {
     id: payload.sub,
