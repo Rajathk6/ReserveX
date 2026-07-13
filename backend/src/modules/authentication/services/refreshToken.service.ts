@@ -1,19 +1,16 @@
-import crypto from 'crypto';
 import ms from 'ms';
 
 import env from '../../../config/env.js';
 import { RefreshTokenRepository } from '../repositories/refreshToken.repository.js';
 import { AppError } from '../../../errors/appErrors.js';
-import { JwtService } from './jwt.service.js';
+import { generateAccessToken } from '../utils/jwt.js';
+import { generateRefreshToken, generateRefreshTokenHash } from '../utils/refreshToken.js';
 
 export class RefreshTokenService {
-  constructor(
-    private readonly refreshTokenRepository = new RefreshTokenRepository(),
-    private readonly jwtService = new JwtService(),
-  ) {}
+  constructor(private readonly refreshTokenRepository = new RefreshTokenRepository()) {}
 
   async refreshTokenRotation(refreshToken: string) {
-    const refreshTokenHash = this.generateRefreshTokenHash(refreshToken);
+    const refreshTokenHash = generateRefreshTokenHash(refreshToken);
     const token = await this.refreshTokenRepository.findByTokenHash(refreshTokenHash);
     if (!token) {
       throw new AppError(401, 'Invalid refresh token');
@@ -26,9 +23,9 @@ export class RefreshTokenService {
 
     await this.refreshTokenRepository.delete(token.id);
 
-    const newRefreshToken = this.generateRefreshToken();
+    const newRefreshToken = generateRefreshToken();
 
-    const newRefreshTokenHash = this.generateRefreshTokenHash(newRefreshToken);
+    const newRefreshTokenHash = generateRefreshTokenHash(newRefreshToken);
 
     await this.refreshTokenRepository.create({
       tokenHash: newRefreshTokenHash,
@@ -37,16 +34,8 @@ export class RefreshTokenService {
     });
 
     return {
-      accessToken: this.jwtService.generateAccessToken(token.user.id, token.user.role),
+      accessToken: generateAccessToken(token.user.id, token.user.role),
       refreshToken: newRefreshToken,
     };
-  }
-
-  generateRefreshToken() {
-    return crypto.randomBytes(32).toString('hex');
-  }
-
-  generateRefreshTokenHash(refreshToken: string) {
-    return crypto.createHash('sha256').update(refreshToken).digest('hex');
   }
 }
