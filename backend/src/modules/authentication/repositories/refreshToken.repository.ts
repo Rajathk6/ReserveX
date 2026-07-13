@@ -31,4 +31,12 @@ export class RefreshTokenRepository {
       },
     });
   }
+
+  async deleteByRefreshtoken(tokenHash: string) {
+    return prisma.refreshToken.delete({
+      where: {
+        tokenHash,
+      },
+    });
+  }
 }

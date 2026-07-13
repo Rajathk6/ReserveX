@@ -20,7 +20,6 @@ export class AuthService {
   // register user
   async register(data: RegisterDTO) {
     const exists = await this.userRepository.exists(data.email);
-
     if (exists) {
       throw new AppError(409, 'user already exists');
     }
@@ -39,7 +38,6 @@ export class AuthService {
   // login user
   async login(data: LoginDTO) {
     const user = await this.userRepository.findByEmail(data.email);
-
     if (!user) {
       throw new AppError(401, 'user not found, please register');
     }
@@ -49,15 +47,16 @@ export class AuthService {
     }
 
     const isValidPassword = await this.verifyPassword(data.password, user.passwordHash);
-
     if (!isValidPassword) {
       throw new AppError(401, 'invalid credentials');
     }
 
     const accessToken = this.jwtService.generateAccessToken(user.id, user.role);
-    const refreshToken = this.refreshTokenService.generateRefreshTokenHash();
+    const refreshToken = this.refreshTokenService.generateRefreshToken();
+    const refreshTokenHash = this.refreshTokenService.generateRefreshTokenHash(refreshToken);
+
     await this.refreshTokenRepository.create({
-      tokenHash: refreshToken,
+      tokenHash: refreshTokenHash,
       userId: user.id,
       expiresAt: new Date(Date.now() + ms(env.JWT_REFRESH_EXPIRES_IN as ms.StringValue)),
     });
@@ -70,6 +69,18 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+
+  // logout user
+  async logout(token: string) {
+    const tokenHash = this.refreshTokenService.generateRefreshTokenHash(token);
+    const validToken = await this.refreshTokenRepository.findByTokenHash(tokenHash);
+
+    if (!validToken) {
+      return;
+    }
+
+    await this.refreshTokenRepository.deleteByRefreshtoken(validToken.tokenHash);
   }
 
   // helper functions

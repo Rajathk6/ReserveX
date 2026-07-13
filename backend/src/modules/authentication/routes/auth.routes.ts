@@ -12,5 +12,6 @@ authRouter.post(
   '/refresh',
   refreshTokenRotationController.refresh.bind(refreshTokenRotationController),
 );
+authRouter.post('/logout', authController.logout.bind(authController));
 
 export default authRouter;

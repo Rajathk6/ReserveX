@@ -1,5 +1,7 @@
 import express from 'express';
 import { pinoHttp } from 'pino-http';
+import cookieParser from 'cookie-parser';
+
 import logger from './config/logger.js';
 import router from './routes/api.routes.js';
 import { AppError } from './errors/appErrors.js';
@@ -15,6 +17,8 @@ app.use(
     extended: true,
   }),
 );
+
+app.use(cookieParser());
 
 app.use(
   pinoHttp({

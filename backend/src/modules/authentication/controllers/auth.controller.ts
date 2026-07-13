@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service.js';
 import { Request, Response } from 'express';
 import { loginSchema, registerSchema } from '../validators/auth.validator.js';
 import { AppError } from '../../../errors/appErrors.js';
+import { cookieOptions } from '../../../config/cookie.js';
 
 export class AuthController {
   constructor(private readonly authService = new AuthService()) {}
@@ -40,9 +41,10 @@ export class AuthController {
 
     const user = await this.authService.login(validatedData.data);
 
+    res.cookie('refreshToken', user.refreshToken, cookieOptions);
+
     return successResponse(res, 'user logged in succesfully', {
       accessToken: user.accessToken,
-      refreshToken: user.refreshToken,
       user: {
         id: user.id,
         fullName: user.fullName,
@@ -50,5 +52,15 @@ export class AuthController {
         role: user.role,
       },
     });
+  }
+
+  async logout(req: Request, res: Response) {
+    const token = req.cookies.refreshToken;
+
+    if (token) await this.authService.logout(token);
+
+    res.clearCookie('refreshToken', cookieOptions);
+
+    return successResponse(res, 'user logged out successfully', {});
   }
 }
