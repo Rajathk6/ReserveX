@@ -13,7 +13,8 @@ export class RefreshTokenService {
   ) {}
 
   async refreshTokenRotation(refreshToken: string) {
-    const token = await this.refreshTokenRepository.findByTokenHash(refreshToken);
+    const refreshTokenHash = this.generateRefreshTokenHash(refreshToken);
+    const token = await this.refreshTokenRepository.findByTokenHash(refreshTokenHash);
     if (!token) {
       throw new AppError(401, 'Invalid refresh token');
     }
@@ -25,10 +26,12 @@ export class RefreshTokenService {
 
     await this.refreshTokenRepository.delete(token.id);
 
-    const newRefreshToken = this.generateRefreshTokenHash();
+    const newRefreshToken = this.generateRefreshToken();
+
+    const newRefreshTokenHash = this.generateRefreshTokenHash(newRefreshToken);
 
     await this.refreshTokenRepository.create({
-      tokenHash: newRefreshToken,
+      tokenHash: newRefreshTokenHash,
       userId: token.user.id,
       expiresAt: new Date(Date.now() + ms(env.JWT_REFRESH_EXPIRES_IN as ms.StringValue)),
     });
@@ -39,7 +42,11 @@ export class RefreshTokenService {
     };
   }
 
-  generateRefreshTokenHash() {
-    return crypto.createHash('sha256').update(crypto.randomBytes(128)).digest('hex');
+  generateRefreshToken() {
+    return crypto.randomBytes(32).toString('hex');
+  }
+
+  generateRefreshTokenHash(refreshToken: string) {
+    return crypto.createHash('sha256').update(refreshToken).digest('hex');
   }
 }
