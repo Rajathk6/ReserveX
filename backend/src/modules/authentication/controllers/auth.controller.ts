@@ -63,4 +63,8 @@ export class AuthController {
 
     return successResponse(res, 'user logged out successfully', {});
   }
+
+  async profile(req: Request, res: Response) {
+    return successResponse(res, 'user profile', req.user);
+  }
 }

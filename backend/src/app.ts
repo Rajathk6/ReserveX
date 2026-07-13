@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import logger from './config/logger.js';
 import router from './routes/api.routes.js';
 import { AppError } from './errors/appErrors.js';
-import { errorHandler } from './middleware/errorHandler.js';
+import { errorHandler } from './middleware/ErrorHandler.js';
 
 const app = express();
 
