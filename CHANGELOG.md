@@ -41,3 +41,17 @@
 - Repository layer
 - Transaction support
 - Database error translation
+
+## v0.4.0 - Authentication & Authorization
+
+### Added
+
+- Registration
+- Login
+- JWT Authentication
+- Refresh Tokens
+- Rotation
+- Logout
+- Authentication Middleware
+- RBAC
+- Protected Routes
