@@ -59,4 +59,9 @@ export class AuthController {
   async profile(req: Request, res: Response) {
     return successResponse(res, 'user profile', req.user);
   }
+
+  // admin
+  async admin(req: Request, res: Response) {
+    return successResponse(res, 'Welcome admin', req.user);
+  }
 }
