@@ -4,8 +4,8 @@ import { EventController } from '../controllers/event.controller.js';
 import { validationHandler } from '../../../middleware/ValidationHandler.js';
 import {
   createEventSchema,
+  eventFilterSchema,
   eventIdParamSchema,
-  paginationSchema,
 } from '../validators/event.validator.js';
 
 const eventRouter = Router();
@@ -21,7 +21,7 @@ eventRouter.post(
 
 eventRouter.get(
   '/',
-  validationHandler(paginationSchema, 'query'),
+  validationHandler(eventFilterSchema, 'query'),
   eventController.getAll.bind(eventController),
 );
 

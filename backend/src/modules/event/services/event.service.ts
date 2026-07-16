@@ -1,5 +1,5 @@
 import { EventRepository } from '../repositories/event.respository.js';
-import { CreateEventDTO, PaginationSchemaDTO, UpdateEventDTO } from '../types/event.type.js';
+import { CreateEventDTO, EventFilterDTO, UpdateEventDTO } from '../types/event.type.js';
 
 export class EventService {
   constructor(private readonly eventRepository = new EventRepository()) {}
@@ -25,8 +25,8 @@ export class EventService {
     });
   }
 
-  async getAll(dto: PaginationSchemaDTO) {
-    const { events, total } = await this.eventRepository.findAll(dto.page, dto.limit);
+  async getAll(dto: EventFilterDTO) {
+    const { events, total } = await this.eventRepository.findAll(dto);
     return {
       events,
       pagination: {

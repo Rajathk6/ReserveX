@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { EventService } from '../services/event.service.js';
 import { successResponse } from '../../../utils/apiResponse.js';
-import { EventIdParamDTO, PaginationSchemaDTO } from '../types/event.type.js';
+import { EventFilterDTO, EventIdParamDTO } from '../types/event.type.js';
 
 export class EventController {
   constructor(private readonly eventService = new EventService()) {}
@@ -13,7 +13,7 @@ export class EventController {
   }
 
   async getAll(req: Request, res: Response) {
-    const dto = req.query as unknown as PaginationSchemaDTO;
+    const dto = req.query as unknown as EventFilterDTO;
     const events = await this.eventService.getAll(dto);
     return successResponse(res, 'Events fetched successfully', events);
   }

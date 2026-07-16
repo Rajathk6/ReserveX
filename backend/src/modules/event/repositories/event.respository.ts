@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '../../../config/database.js';
+import { EventFilterDTO } from '../types/event.type.js';
 
 export class EventRepository {
   async create(data: Prisma.EventCreateInput) {
@@ -16,16 +17,38 @@ export class EventRepository {
     });
   }
 
-  async findAll(page: number, limit: number) {
+  async findAll(dto: EventFilterDTO) {
+    const where: Prisma.EventWhereInput = {};
+
+    if (dto.status) {
+      where.status = dto.status;
+    }
+
+    if (dto.cityId) {
+      where.cityId = dto.cityId;
+    }
+
+    if (dto.startDate) {
+      where.startTime = {
+        gte: dto.startDate,
+      };
+    }
+
+    const skip = (dto.page - 1) * dto.limit;
+
     const [events, total] = await prisma.$transaction([
       prisma.event.findMany({
-        skip: (page - 1) * limit,
-        take: limit,
+        where,
+        skip,
+        take: dto.limit,
         orderBy: {
           createdAt: 'desc',
         },
       }),
-      prisma.event.count(),
+
+      prisma.event.count({
+        where,
+      }),
     ]);
 
     return {
