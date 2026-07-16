@@ -28,4 +28,5 @@ export const eventFilterSchema = paginationSchema.extend({
   status: z.nativeEnum(EventStatus).optional(),
   cityId: z.cuid2().optional(),
   startDate: z.coerce.date().optional(),
+  search: z.string().trim().min(2).max(100).optional(),
 });

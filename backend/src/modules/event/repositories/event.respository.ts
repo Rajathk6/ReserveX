@@ -34,6 +34,23 @@ export class EventRepository {
       };
     }
 
+    if (dto.search) {
+      where.OR = [
+        {
+          title: {
+            contains: dto.search,
+            mode: 'insensitive',
+          },
+        },
+        {
+          description: {
+            contains: dto.search,
+            mode: 'insensitive',
+          },
+        },
+      ];
+    }
+
     const skip = (dto.page - 1) * dto.limit;
 
     const [events, total] = await prisma.$transaction([
