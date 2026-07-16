@@ -16,8 +16,22 @@ export class EventRepository {
     });
   }
 
-  async findAll() {
-    return prisma.event.findMany();
+  async findAll(page: number, limit: number) {
+    const [events, total] = await prisma.$transaction([
+      prisma.event.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+      prisma.event.count(),
+    ]);
+
+    return {
+      events,
+      total,
+    };
   }
 
   async update(id: string, data: Prisma.EventUpdateInput) {

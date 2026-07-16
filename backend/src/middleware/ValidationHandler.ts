@@ -14,6 +14,17 @@ export function validationHandler(schema: ZodType, target: Target): RequestHandl
       return next(new AppError(400, result.error.issues[0].message));
     }
 
+    if (target === 'query') {
+      Object.defineProperty(req, 'query', {
+        value: result.data,
+        writable: true,
+        configurable: true,
+        enumerable: true,
+      });
+    } else {
+      req[target] = result.data;
+    }
+
     req[target] = result.data;
 
     next();

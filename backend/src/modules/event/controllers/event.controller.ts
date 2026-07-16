@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { EventService } from '../services/event.service.js';
 import { successResponse } from '../../../utils/apiResponse.js';
-import { eventIdParam } from '../types/event.type.js';
+import { EventIdParamDTO, PaginationSchemaDTO } from '../types/event.type.js';
 
 export class EventController {
   constructor(private readonly eventService = new EventService()) {}
@@ -13,21 +13,22 @@ export class EventController {
   }
 
   async getAll(req: Request, res: Response) {
-    const events = await this.eventService.getAll();
+    const dto = req.query as unknown as PaginationSchemaDTO;
+    const events = await this.eventService.getAll(dto);
     return successResponse(res, 'Events fetched successfully', events);
   }
 
-  async get(req: Request<eventIdParam>, res: Response) {
+  async get(req: Request<EventIdParamDTO>, res: Response) {
     const events = await this.eventService.get(req.params.id);
     return successResponse(res, 'Event fetched successfully', events);
   }
 
-  async update(req: Request<eventIdParam>, res: Response) {
+  async update(req: Request<EventIdParamDTO>, res: Response) {
     const event = await this.eventService.update(req.params.id, req.body);
     return successResponse(res, 'Event updated successfully', event);
   }
 
-  async delete(req: Request<eventIdParam>, res: Response) {
+  async delete(req: Request<EventIdParamDTO>, res: Response) {
     const event = await this.eventService.delete(req.params.id);
     return successResponse(res, 'Event deleted successfully', event);
   }
