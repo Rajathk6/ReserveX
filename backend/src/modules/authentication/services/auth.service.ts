@@ -1,10 +1,10 @@
 import ms from 'ms';
 
 import { UserRepository } from '../../user/repository/user.respository.js';
-import { LoginDTO, RegisterDTO } from '../validators/auth.validator.js';
+import { LoginDTO, RegisterDTO } from '../types/auth.type.js';
 import { AppError } from '../../../errors/appErrors.js';
 import { generateAccessToken } from '../utils/jwt.js';
-import { RefreshTokenRepository } from '../repositories/refreshToken.repository.js';
+import { RefreshTokenRepository } from '../repositories/refreshToken.repositor.js';
 import env from '../../../config/env.js';
 import { hashPassword, verifyPassword } from '../utils/password.js';
 import { generateRefreshToken, generateRefreshTokenHash } from '../utils/refreshToken.js';
