@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { successResponse } from '../../../utils/apiResponse.js';
 import { AuthService } from '../services/auth.service.js';
-import { LoginDTO, RegisterDTO } from '../validators/auth.validator.js';
+import { LoginDTO, RegisterDTO } from '../types/auth.type.js';
 import { cookieOptions } from '../../../config/cookie.js';
 
 export class AuthController {
