@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { AuthController } from '../controllers/auth.controller.js';
 import { RefreshTokenRotationController } from '../controllers/refreshToken.controller.js';
 import { authenticationHandler, authorizationHandler } from '../../../middleware/AuthHandler.js';
-import { validateHandler } from '../../../middleware/ValidationHandler.js';
+import { validationHandler } from '../../../middleware/ValidationHandler.js';
 import { registerSchema, loginSchema } from '../validators/auth.validator.js';
 import { UserRole } from '@prisma/client';
 
@@ -12,11 +12,15 @@ const refreshTokenRotationController = new RefreshTokenRotationController();
 
 authRouter.post(
   '/register',
-  validateHandler(registerSchema),
+  validationHandler(registerSchema, 'body'),
   authController.register.bind(authController),
 );
 
-authRouter.post('/login', validateHandler(loginSchema), authController.login.bind(authController));
+authRouter.post(
+  '/login',
+  validationHandler(loginSchema, 'body'),
+  authController.login.bind(authController),
+);
 
 authRouter.post(
   '/refresh',
@@ -31,6 +35,7 @@ authRouter.get(
   '/admin',
   authenticationHandler,
   authorizationHandler(UserRole.ADMIN),
+  validationHandler(loginSchema, 'body'),
   authController.admin.bind(authController),
 );
 

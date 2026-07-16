@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+
 import { EventService } from '../services/event.service.js';
 import { successResponse } from '../../../utils/apiResponse.js';
-import { eventIdParamSchema } from '../validators/event.validator.js';
+import { eventIdParam } from '../types/event.type.js';
 
 export class EventController {
   constructor(private readonly eventService = new EventService()) {}
@@ -13,25 +14,21 @@ export class EventController {
 
   async getAll(req: Request, res: Response) {
     const events = await this.eventService.getAll();
-
     return successResponse(res, 'Events fetched successfully', events);
   }
 
-  async get(req: Request, res: Response) {
-    const params = eventIdParamSchema.parse(req.params);
-    const events = await this.eventService.get(params.id);
+  async get(req: Request<eventIdParam>, res: Response) {
+    const events = await this.eventService.get(req.params.id);
     return successResponse(res, 'Event fetched successfully', events);
   }
 
-  async update(req: Request, res: Response) {
-    const params = eventIdParamSchema.parse(req.params);
-    const event = await this.eventService.update(params.id, req.body);
+  async update(req: Request<eventIdParam>, res: Response) {
+    const event = await this.eventService.update(req.params.id, req.body);
     return successResponse(res, 'Event updated successfully', event);
   }
 
-  async delete(req: Request, res: Response) {
-    const params = eventIdParamSchema.parse(req.params);
-    const event = await this.eventService.delete(params.id);
+  async delete(req: Request<eventIdParam>, res: Response) {
+    const event = await this.eventService.delete(req.params.id);
     return successResponse(res, 'Event deleted successfully', event);
   }
 }
