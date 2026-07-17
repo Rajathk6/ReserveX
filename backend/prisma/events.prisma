@@ -1,20 +1,21 @@
 model Event {
-    id String @id @default(cuid())
-    title String
+    id          String      @id @default(cuid())
+    title       String
     description String
-    startTime DateTime @db.Timestamptz(3)
-    endTime DateTime @db.Timestamptz(3)
-    capacity Int
-    status EventStatus @default(DRAFT)
-    venue String
-    createdAt DateTime @default(now()) @db.Timestamptz(3)
-    updatedAt DateTime @updatedAt @db.Timestamptz(3)
+    startTime   DateTime    @db.Timestamptz(3)
+    endTime     DateTime    @db.Timestamptz(3)
+    capacity    Int
+    status      EventStatus @default(DRAFT)
+    venue       String
+    createdAt   DateTime    @default(now()) @db.Timestamptz(3)
+    updatedAt   DateTime    @updatedAt @db.Timestamptz(3)
 
     organizerId String
-    organizer User @relation(fields: [organizerId], references: [id])
+    organizer   User   @relation(fields: [organizerId], references: [id])
 
     cityId String
-    city City @relation(fields: [cityId], references: [id])
+    city   City   @relation(fields: [cityId], references: [id])
+    seats  Seat[]
 
     @@index([status])
     @@index([cityId])
