@@ -4,18 +4,16 @@ model Event {
     description String
     startTime   DateTime    @db.Timestamptz(3)
     endTime     DateTime    @db.Timestamptz(3)
-    capacity    Int
     status      EventStatus @default(DRAFT)
-    venue       String
     createdAt   DateTime    @default(now()) @db.Timestamptz(3)
     updatedAt   DateTime    @updatedAt @db.Timestamptz(3)
 
     organizerId String
     organizer   User   @relation(fields: [organizerId], references: [id])
-
-    cityId String
-    city   City   @relation(fields: [cityId], references: [id])
-    seats  Seat[]
+    cityId      String
+    city        City   @relation(fields: [cityId], references: [id])
+    venueId     String
+    venue       Venue  @relation(fields: [venueId], references: [id])
 
     @@index([status])
     @@index([cityId])

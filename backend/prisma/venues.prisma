@@ -1,0 +1,18 @@
+model Venue {
+    id          String  @id @default(cuid())
+    name        String
+    capacity    Int
+    cityId      String
+    city        City    @relation(fields: [cityId], references: [id])
+    isActive    Boolean @default(true)
+    vipRows     Int
+    premiumRows Int
+
+    createdAt DateTime @default(now()) @db.Timestamptz(3)
+    updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+    events Event[]
+    seats  Seat[]
+
+    @@map("venues")
+}

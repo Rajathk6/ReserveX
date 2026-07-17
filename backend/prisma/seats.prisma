@@ -5,11 +5,12 @@ model Seat {
     label    String
     category SeatCategory
 
-    eventId String
-    event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+    venueId String
+    venue   Venue  @relation(fields: [venueId], references: [id])
 
     createdAt DateTime @default(now()) @db.Timestamptz(3)
     updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
-    @@unique([eventId, label])
+    @@unique([venueId, label])
+    @@map("seats")
 }
