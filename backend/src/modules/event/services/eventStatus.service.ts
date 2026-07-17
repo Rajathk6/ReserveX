@@ -1,4 +1,5 @@
 import { EventStatus } from '@prisma/client';
+
 import { AppError } from '../../../errors/appErrors.js';
 import { EventRepository } from '../repositories/event.respository.js';
 import { EventStatusRepository } from '../repositories/eventStatus.repository.js';

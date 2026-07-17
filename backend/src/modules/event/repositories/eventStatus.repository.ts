@@ -1,4 +1,5 @@
 import { EventStatus } from '@prisma/client';
+
 import { prisma } from '../../../config/database.js';
 
 export class EventStatusRepository {

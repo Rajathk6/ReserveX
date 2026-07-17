@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { authenticationHandler, authorizationHandler } from '../../../middleware/AuthHandler.js';
 import { EventController } from '../controllers/event.controller.js';
 import { validationHandler } from '../../../middleware/ValidationHandler.js';
