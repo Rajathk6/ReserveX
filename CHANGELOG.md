@@ -55,3 +55,16 @@
 - Authentication Middleware
 - RBAC
 - Protected Routes
+
+## v0.5.0 - Event Management
+
+### Added
+
+- Event Entity
+- Venue Entity
+- CRUD APIs
+- Pagination
+- Filtering
+- Searching
+- Validation
+- Event Status

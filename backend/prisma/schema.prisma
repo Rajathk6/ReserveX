@@ -16,3 +16,10 @@ enum UserRole {
   ADMIN
   USER
 }
+
+enum EventStatus {
+  CANCELLED
+  COMPLETED
+  DRAFT
+  PUBLISHED
+}

@@ -1,6 +1,6 @@
 {
   "name": "@reservex/backend",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "Production-inspired ticket booking backend.",
   "main": "dist/index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "format": "prettier . --write",
     "prepare": "husky",
     "postinstall": "prisma generate",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/scripts/seed.ts"
   },
   "keywords": [],
   "author": "",
