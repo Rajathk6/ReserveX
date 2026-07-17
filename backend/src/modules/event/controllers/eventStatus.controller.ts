@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
+
 import { EventStatusService } from '../services/eventStatus.service.js';
 import { EventIdParamDTO } from '../types/event.type.js';
 import { successResponse } from '../../../utils/apiResponse.js';
+
 export class EventStatuscontroller {
   constructor(private readonly eventStatusService = new EventStatusService()) {}
 
