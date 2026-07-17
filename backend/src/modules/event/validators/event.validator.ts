@@ -1,3 +1,4 @@
+import { EventStatus } from '@prisma/client';
 import { z } from 'zod';
 
 export const eventIdParamSchema = z.object({
@@ -16,4 +17,16 @@ export const createEventSchema = z.object({
   capacity: z.number().int().positive(),
   venue: z.string().trim(),
   cityId: z.cuid(),
+});
+
+export const paginationSchema = z.object({
+  page: z.coerce.number().int().positive().default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(10),
+});
+
+export const eventFilterSchema = paginationSchema.extend({
+  status: z.nativeEnum(EventStatus).optional(),
+  cityId: z.cuid2().optional(),
+  startDate: z.coerce.date().optional(),
+  search: z.string().trim().min(2).max(100).optional(),
 });
