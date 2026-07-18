@@ -8,13 +8,14 @@ export function errorHandler(err: Error, _req: Request, res: Response, _next: Ne
     return res.status(err.statusCode).json({
       success: false,
       message: err.message,
+      ...(err.errors && { errors: err.errors }),
     });
   }
   if (env.NODE_ENV === 'development') {
     return res.status(500).json({
       success: false,
       message: err.message,
-      stack: err.stack,
+      cause: err.cause,
     });
   } else {
     return res.status(500).json({
