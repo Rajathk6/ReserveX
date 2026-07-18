@@ -68,3 +68,14 @@
 - Searching
 - Validation
 - Event Status
+
+## v0.6.0 - Venue and Seat Management
+
+## Added
+
+- Seat module added.
+- Automatic seat generation.
+- Seat querying APIs.
+- Filtering.
+- Pagination.
+- Documentation updates.

@@ -1,0 +1,16 @@
+model Seat {
+    id       String       @id @default(cuid())
+    row      String
+    number   Int
+    label    String
+    category SeatCategory
+
+    venueId String
+    venue   Venue  @relation(fields: [venueId], references: [id])
+
+    createdAt DateTime @default(now()) @db.Timestamptz(3)
+    updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+    @@unique([venueId, label])
+    @@map("seats")
+}

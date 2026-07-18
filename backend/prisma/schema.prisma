@@ -23,3 +23,9 @@ enum EventStatus {
   DRAFT
   PUBLISHED
 }
+
+enum SeatCategory {
+  PREMIUM
+  REGULAR
+  VIP
+}

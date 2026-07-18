@@ -35,7 +35,6 @@ authRouter.get(
   '/admin',
   authenticationHandler,
   authorizationHandler(UserRole.ADMIN),
-  validationHandler(loginSchema, 'body'),
   authController.admin.bind(authController),
 );
 

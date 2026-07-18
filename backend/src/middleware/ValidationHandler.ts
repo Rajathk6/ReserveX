@@ -11,7 +11,12 @@ export function validationHandler(schema: ZodType, target: Target): RequestHandl
     const result = schema.safeParse(req[target]);
 
     if (!result.success) {
-      return next(new AppError(400, result.error.issues[0].message));
+      const errors = result.error.issues.map((issue) => ({
+        field: issue.path.join('.'),
+        message: issue.input === undefined ? `${issue.path.join('.')} is required` : issue.message,
+      }));
+
+      return next(new AppError(400, 'Validation failed', errors));
     }
 
     if (target === 'query') {
