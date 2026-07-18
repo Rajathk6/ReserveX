@@ -10,8 +10,6 @@ export class EventService {
       description: dto.description,
       startTime: dto.startTime,
       endTime: dto.endTime,
-      capacity: dto.capacity,
-      venue: dto.venue,
       organizer: {
         connect: {
           id: organizerId,
@@ -20,6 +18,11 @@ export class EventService {
       city: {
         connect: {
           id: dto.cityId,
+        },
+      },
+      venue: {
+        connect: {
+          id: dto.venueId,
         },
       },
     });

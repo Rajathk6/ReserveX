@@ -14,9 +14,8 @@ export const createEventSchema = z.object({
   endTime: z.coerce.date().refine((date) => date > new Date(), {
     message: 'End time must be in the future',
   }),
-  capacity: z.number().int().positive(),
-  venue: z.string().trim(),
-  cityId: z.cuid(),
+  cityId: z.cuid2(),
+  venueId: z.cuid2(),
 });
 
 export const paginationSchema = z.object({
