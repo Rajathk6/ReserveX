@@ -11,6 +11,7 @@ model User {
 
     refreshTokens RefreshToken[]
     events        Event[]
+    bookings      booking[]
 
     @@map("users")
 }
