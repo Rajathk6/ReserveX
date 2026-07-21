@@ -41,7 +41,7 @@ export class BookingRepository {
         seat: {
           select: {
             id: true,
-            number: true,
+            label: true,
             category: true,
           },
         },
@@ -84,7 +84,7 @@ export class BookingRepository {
     });
   }
 
-  async update(
+  async cancel(
     bookingId: string,
     data: Prisma.bookingUpdateInput,
     db: Prisma.TransactionClient = prisma,
