@@ -1,0 +1,18 @@
+model booking {
+    id        String        @id @default(cuid())
+    status    BookingStatus @default(RESERVED)
+    expiresAt DateTime?     @db.Timestamptz(3)
+    createdAt DateTime      @default(now()) @db.Timestamptz(3)
+    updatedAt DateTime      @updatedAt @db.Timestamptz(3)
+
+    userId  String
+    user    User   @relation(fields: [userId], references: [id])
+    eventId String
+    event   Event  @relation(fields: [eventId], references: [id])
+    seatId  String
+    seat    Seat   @relation(fields: [seatId], references: [id])
+
+    @@index([eventId])
+    @@index([seatId])
+    @@index([userId])
+}

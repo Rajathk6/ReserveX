@@ -29,3 +29,10 @@ enum SeatCategory {
   REGULAR
   VIP
 }
+
+enum BookingStatus {
+  CANCELLED
+  CONFIRMED
+  EXPIRED
+  RESERVED
+}
