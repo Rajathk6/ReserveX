@@ -15,4 +15,5 @@ model booking {
     @@index([eventId])
     @@index([seatId])
     @@index([userId])
+    @@map("bookings")
 }
