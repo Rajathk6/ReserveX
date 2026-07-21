@@ -8,7 +8,7 @@ import {
 
 export type CreateBookingDTO = z.infer<typeof createBookingSchema>;
 
-export type EventBookingDTO = z.infer<typeof eventBookingParamschema>;
+export type EventBookingParamDTO = z.infer<typeof eventBookingParamschema>;
 
 export type BookingIdParamDTO = z.infer<typeof bookingIdParamSchema>;
 

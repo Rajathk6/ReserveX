@@ -3,7 +3,11 @@ import { AppError } from '../../../errors/appErrors.js';
 import { EventRepository } from '../../event/repositories/event.respository.js';
 import { SeatRepository } from '../../seat/repositories/seat.repository.js';
 import { BookingRepository } from '../repositories/booking.repository.js';
-import { BookingIdParamDTO, CreateBookingDTO, EventBookingDTO } from '../types/booking.type.js';
+import {
+  BookingIdParamDTO,
+  CreateBookingDTO,
+  EventBookingParamDTO,
+} from '../types/booking.type.js';
 import { prisma } from '../../../config/database.js';
 
 export class BookingService {
@@ -13,7 +17,7 @@ export class BookingService {
     private readonly seatRepository = new SeatRepository(),
   ) {}
 
-  async createBooking(dto: CreateBookingDTO, eventData: EventBookingDTO, userId: string) {
+  async createBooking(dto: CreateBookingDTO, eventData: EventBookingParamDTO, userId: string) {
     const event = await this.eventRepository.findById(eventData.eventId);
     if (!event) {
       throw new AppError(404, 'Event Not Found');
