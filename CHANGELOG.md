@@ -79,3 +79,16 @@
 - Filtering.
 - Pagination.
 - Documentation updates.
+
+## v0.7.0 - Booking Management
+
+## Added
+
+- Booking module
+- Booking APIs
+- Reservation workflow
+- Transactional booking creation
+- Double booking prevention
+- Seat locking
+- Reservation expiration
+- Booking cancellation
