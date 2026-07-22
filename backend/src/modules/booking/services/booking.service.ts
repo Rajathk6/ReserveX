@@ -91,6 +91,11 @@ export class BookingService {
     if (!booking) {
       throw new AppError(404, 'Booking not found');
     }
+
+    if (booking.status !== BookingStatus.CONFIRMED) {
+      throw new AppError(400, 'Ony confirmed bookings can be cancelled');
+    }
+
     return this.bookingRepository.cancel(dto.bookingId, { status: BookingStatus.CANCELLED });
   }
 }

@@ -13,36 +13,19 @@ export class BookingRepository {
       where: {
         id: bookingId,
       },
-      include: {
-        event: {
-          select: {
-            id: true,
-            title: true,
-            venue: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-            city: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-            organizer: {
-              select: {
-                id: true,
-                fullName: true,
-              },
-            },
-          },
-        },
+      select: {
+        status: true,
+        expiresAt: true,
         seat: {
           select: {
             id: true,
             label: true,
-            category: true,
+          },
+        },
+        event: {
+          select: {
+            id: true,
+            title: true,
           },
         },
       },
@@ -108,6 +91,19 @@ export class BookingRepository {
       data: {
         status: BookingStatus.EXPIRED,
       },
+    });
+  }
+
+  async update(
+    bookingId: string,
+    data: Prisma.bookingUpdateInput,
+    db: Prisma.TransactionClient = prisma,
+  ) {
+    return db.booking.update({
+      where: {
+        id: bookingId,
+      },
+      data,
     });
   }
 }
