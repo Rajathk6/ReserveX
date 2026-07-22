@@ -7,5 +7,5 @@ export const cookieOptions: CookieOptions = {
   sameSite: 'strict',
   path: '/api/v1/auth',
   secure: env.NODE_ENV === 'production',
-  maxAge: ms(env.JWT_ACCESS_EXPIRES_IN as StringValue),
+  maxAge: ms(env.JWT_REFRESH_EXPIRES_IN as StringValue),
 };
