@@ -1,10 +1,9 @@
-import { AuthService } from '../src/modules/authentication/services/auth.service';
+import { hashPassword, verifyPassword } from '../src/modules/authentication/utils/password';
 async function main() {
-  const authService = new AuthService();
-  const hash = await authService.hashPassword('password');
+  const hash = await hashPassword('password');
   console.log(hash);
 
-  const verify = await authService.verifyPassword(
+  const verify = await verifyPassword(
     'password',
     '$2b$12$SCYxV7By41N3a5FC4/0neOhVQoVob1hPXU9jQblgaSC61AnDPcNVq',
   );
