@@ -7,6 +7,9 @@ const env = cleanEnv(process.env, {
   DATABASE_URL: str(),
   REDIS_HOST: str(),
   REDIS_PORT: port(),
+  REDIS_PASSWORD: str({
+    default: '',
+  }),
   JWT_ACCESS_SECRET: str(),
   JWT_ACCESS_EXPIRES_IN: str(),
   JWT_REFRESH_SECRET: str(),
